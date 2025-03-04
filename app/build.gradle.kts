@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.miapp.iDEMO_kairos24h"
+    namespace = "com.miapp.beiman"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.miapp.iDEMO_kairos24h"
+        applicationId = "com.miapp.beiman"
         minSdk = 25
         targetSdk = 35
         versionCode = 1

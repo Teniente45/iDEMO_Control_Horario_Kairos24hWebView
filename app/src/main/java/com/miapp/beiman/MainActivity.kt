@@ -1,8 +1,7 @@
-package com.miapp.iDEMO_kairos24h
+package com.miapp.beiman
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import java.net.URLEncoder
@@ -29,8 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.*
-import com.miapp.iDEMO_kairos24h.enlaces_internos.AuthManager
-import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL
+import com.miapp.beiman.enlaces_internos.AuthManager
+import com.miapp.beiman.enlaces_internos.WebViewURL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

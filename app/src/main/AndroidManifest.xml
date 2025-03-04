@@ -22,7 +22,7 @@
 
         <!-- Declaración de MainActivity forzada a vertical -->
         <activity
-            android:name="com.miapp.iDEMO_kairos24h.MainActivity"
+            android:name="com.miapp.beiman.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Kairos24h"
             android:screenOrientation="portrait">
@@ -34,7 +34,7 @@
 
         <!-- Declaración de Fichar forzada a vertical -->
         <activity
-            android:name="com.miapp.iDEMO_kairos24h.Fichar"
+            android:name="com.miapp.beiman.Fichar"
             android:exported="true"
             android:theme="@style/Theme.Kairos24h"
             android:screenOrientation="portrait" />

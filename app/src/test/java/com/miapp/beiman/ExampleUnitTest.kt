@@ -1,4 +1,4 @@
-package com.miapp.iDEMO_kairos24h
+package com.miapp.beiman
 
 import org.junit.Test
 

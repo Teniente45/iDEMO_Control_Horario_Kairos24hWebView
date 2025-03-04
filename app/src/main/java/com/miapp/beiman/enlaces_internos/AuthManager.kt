@@ -1,4 +1,4 @@
-package com.miapp.iDEMO_kairos24h.enlaces_internos
+package com.miapp.beiman.enlaces_internos
 
 import android.content.Context
 import android.util.Log

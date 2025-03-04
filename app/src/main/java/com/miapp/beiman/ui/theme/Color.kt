@@ -1,4 +1,4 @@
-package com.miapp.iDEMO_kairos24h.ui.theme
+package com.miapp.beiman.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
