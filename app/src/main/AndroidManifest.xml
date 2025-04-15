@@ -34,9 +34,8 @@
             </intent-filter>
         </activity>
 
-        <!-- Declaración de Fichar forzada a vertical -->
         <activity
-            android:name="com.miapp.iDEMO_kairos24h.Fichar"
+            android:name="com.miapp.iDEMO_kairos24h.PruebaCarton"
             android:exported="true"
             android:theme="@style/Theme.Kairos24h"
             android:screenOrientation="portrait" />

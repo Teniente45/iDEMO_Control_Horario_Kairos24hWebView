@@ -56,6 +56,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.miapp.iDEMO_kairos24h.enlaces_internos.AuthManager
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL
+import com.miapp.iDEMO_kairos24h_prueba.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
@@ -70,19 +71,10 @@ class MainActivity : ComponentActivity() {
         val prefs = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         val isFirstRun = prefs.getBoolean("first_run", true)
         if (isFirstRun) {
-            // Limpiamos las credenciales para que se muestre siempre la pantalla de login en el primer arranque
-            clearCredentials()
             prefs.edit { putBoolean("first_run", false) }
         }
 
-        // Obtenemos las credenciales almacenadas (usuario, password y xEmpleado)
-        val (storedUser, storedPassword, _) = AuthManager.getUserCredentials(this)
 
-        if (storedUser.isNotEmpty() && storedPassword.isNotEmpty()) {
-            // Si existen credenciales, redirigimos a Fichar directamente
-            navigateToFichar(storedUser, storedPassword)
-        } else {
-            // Si no existen credenciales, mostramos la pantalla de inicio de sesión
             setContent {
                 MaterialTheme {
                     val navController = rememberNavController()
@@ -116,7 +108,10 @@ class MainActivity : ComponentActivity() {
                                                             password,
                                                             xEmpleado
                                                         )
-                                                        navController.navigate("fichar/$usuario/$password")
+                                                        val intent = Intent(this@MainActivity, PruebaCarton::class.java)
+                                                        intent.putExtra("usuario", usuario)
+                                                        startActivity(intent)
+                                                        finish()
                                                     } else {
                                                         Toast.makeText(
                                                             this@MainActivity,
@@ -150,51 +145,12 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable("fichar/{usuario}/{password}") { backStackEntry ->
-                            val usuario = backStackEntry.arguments?.getString("usuario") ?: ""
-                            val password = backStackEntry.arguments?.getString("password") ?: ""
-
-                            FicharScreen(
-                                usuario = usuario,
-                                password = password,
-                                onLogout = { navigateToLogin() }
-                            ) // 🔥 Se pasa un valor vacío
-                        }
                     }
                 }
             }
         }
     }
 
-    private fun navigateToLogin() {
-        val sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            clear()
-            apply()
-        }
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-    }
-
-    // 🔥 Redirige al usuario a la pantalla de fichaje pasando las credenciales como intent extras
-    private fun navigateToFichar(usuario: String, password: String) {
-        val intent = Intent(this, Fichar::class.java)
-        intent.putExtra("usuario", usuario)
-        intent.putExtra("password", password)
-        startActivity(intent)
-        finish() // Finaliza la actividad actual para evitar volver atrás
-    }
-    // 🔥 Borra las credenciales almacenadas en SharedPreferences
-    private fun clearCredentials() {
-        val sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            remove("usuario")
-            remove("password")
-            remove("xEmpleado")
-            apply()
-        }
-    }
     // 📌 Función para verificar si hay conexión a Internet (WiFi o Datos Móviles)
     private fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager =
@@ -205,7 +161,7 @@ class MainActivity : ComponentActivity() {
         return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
-}
+
 
     // 🔥 Pantalla de inicio de sesión con formulario de usuario y contraseña
     @Composable

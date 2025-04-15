@@ -9,8 +9,8 @@ package com.miapp.iDEMO_kairos24h.enlaces_internos
      */
 
 
-    //const val HOST = "https://democontrolhorario.kairos24h.es"
-    const val HOST = "http://192.168.25.67:8008/kairos24h"
+    const val HOST = "https://democontrolhorario.kairos24h.es"
+    //const val HOST = "http://192.168.25.67:8008/kairos24h"
     const val ENTRY_POINT = "/index.php"
     const val URL_USADA = "$HOST$ENTRY_POINT"
 
@@ -45,8 +45,8 @@ object BuildURL {
     http://192.168.25.67:8008/kairos24h/index.php?r=wsExterno/consultarAlertasExterno&xEntidad=3&xEmpleado=413&fecha=2025-03-19
     */
     /*==================================================================*/
-    //const val HOST = "https://democontrolhorario.kairos24h.es"
-    const val HOST = "http://192.168.25.67:8008/kairos24h"
+    const val HOST = "https://democontrolhorario.kairos24h.es"
+    //const val HOST = "http://192.168.25.67:8008/kairos24h"
 
     const val ENTRY_POINT = "/index.php"
     const val ACTION_FICHAJE = "r=explotacion/creaFichaje"
@@ -59,7 +59,7 @@ object BuildURL {
     //const val X_ENTIDAD = "1002"
     const val X_ENTIDAD = "3"
     const val C_KIOSKO = ""
-    const val C_FIC_ORI = "CPPMOVIL"
+    const val C_FIC_ORI = "APP"
 
 
     const val staticParams =
