@@ -549,15 +549,15 @@ fun BottomNavigationBar(
         // 🔥 Modificamos las funciones de navegación para ocultar el cuadro
         NavigationButton("Fichajes", R.drawable.ic_fichajes32) {
             hideCuadroParaFichar()
-            onNavigate(WebViewURL.Fichaje)
+            onNavigate(WebViewURL.FICHAJE)
         }
         NavigationButton("Incidencias", R.drawable.ic_incidencia32) {
             hideCuadroParaFichar()
-            onNavigate(WebViewURL.Incidencia)
+            onNavigate(WebViewURL.INCIDENCIA)
         }
         NavigationButton("Horarios", R.drawable.ic_horario32) {
             hideCuadroParaFichar()
-            onNavigate(WebViewURL.Horarios)
+            onNavigate(WebViewURL.HORARIOS)
         }
     }
 }

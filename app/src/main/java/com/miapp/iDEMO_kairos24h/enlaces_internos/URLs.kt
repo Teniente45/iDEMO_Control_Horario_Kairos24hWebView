@@ -21,17 +21,17 @@ object WebViewURL {
     const val ACTION_CONSULTAR = "r=explotacion/consultarExplotacion"
 
     const val LOGIN = "$URL_USADA?$ACTION_LOGIN"
-    const val forgotPassword = "$URL_USADA?$ACTION_FORGOTPASS"
+    const val FORGOT_PASSWORD = "$URL_USADA?$ACTION_FORGOTPASS"
 
-    const val Fichaje = "$URL_USADA?$ACTION_CONSULTAR" +
+    const val FICHAJE = "$URL_USADA?$ACTION_CONSULTAR" +
             "&cTipExp=FICHAJE"
-    const val Incidencia = "$URL_USADA?$ACTION_CONSULTAR" +
+    const val INCIDENCIA = "$URL_USADA?$ACTION_CONSULTAR" +
             "&cTipExp=INCIDENCIA" + "&cOpcionVisual=INCBAN"
-    const val Horarios = "$URL_USADA?$ACTION_CONSULTAR" +
+    const val HORARIOS = "$URL_USADA?$ACTION_CONSULTAR" +
             "&cTipExp=HORARIO" + "&cModoVisual=HORMEN"
-    const val Solicitudes = "$URL_USADA?$ACTION_CONSULTAR" +
+    const val SOLICITUDES = "$URL_USADA?$ACTION_CONSULTAR" +
             "&cTipExp=SOLICITUD"
-    const val BandejaDeSolicitudes = "$URL_USADA?$ACTION_CONSULTAR" +
+    const val BANDEJA_DE_SOLICITUDES = "$URL_USADA?$ACTION_CONSULTAR" +
             "&cTipExp=SOLICITUD" + "&xEmpleadoBandeja="+ "&cOpcionVisual=SOLBAN"
 }
 
@@ -62,11 +62,9 @@ object BuildURL {
 
     fun getStaticParams(context: Context): String {
         val creds = AuthManager.getUserCredentials(context)
-        val xEntidad = creds.xEntidad ?: ""
         val xEmpleado = creds.xEmpleado ?: ""
         return "&xGrupo=$X_GRUPO" +
-                //"&xEntidad=$xEntidad" +
-                "&xEntidad=$X_ENTIDAD" + // Está Hardcodeado hasta que obtengamos el xEntidad del JSON
+                "&xEntidad=$X_ENTIDAD" +
                 "&xEmpleado=$xEmpleado" +
                 "&cKiosko=$C_KIOSKO" +
                 "&cDomFicOri=$C_FIC_ORI"

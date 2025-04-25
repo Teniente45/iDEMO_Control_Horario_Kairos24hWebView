@@ -1,9 +1,6 @@
 package com.miapp.iDEMO_kairos24h.enlaces_internos
 
-import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.BandejaDeSolicitudes
-import android.Manifest
 import android.app.DatePickerDialog
-import android.content.pm.PackageManager
 import android.util.Log
 import android.webkit.WebView
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -67,9 +64,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
-import androidx.core.content.ContextCompat
 import com.miapp.iDEMO_kairos24h.R
-import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.Solicitudes
+import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.BANDEJA_DE_SOLICITUDES
+import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.SOLICITUDES
 import com.miapp.iDEMO_kairos24h.fichar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -172,7 +169,7 @@ fun RecuadroSolicitudes(onAbrirWebView: (String) -> Unit) {
             ) {
                 Button(
                     onClick = {
-                        onAbrirWebView(Solicitudes)
+                        onAbrirWebView(SOLICITUDES)
                     },
                     shape = RoundedCornerShape(6.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7599B6))
@@ -533,8 +530,7 @@ fun RecuadroFichajesDia() {
     // Log de la fecha usada para la petición
     Log.d("RecuadroFichajesDia", "Fecha usada para la petición: ${fechaSeleccionada.value}")
 
-    val (_, _, xEmpleadoRaw) = AuthManager.getUserCredentials(context)
-    val xEmpleado = xEmpleadoRaw ?: "SIN_EMPLEADO"
+    val (_, _, _) = AuthManager.getUserCredentials(context)
 
     val fichajesTexto by produceState(initialValue = emptyList<String>(), key1 = fechaSeleccionada.value) {
         value = try {
@@ -841,7 +837,7 @@ fun AlertasDiarias(onAbrirWebView: (String) -> Unit) {
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
-                                onAbrirWebView(BandejaDeSolicitudes)                            },
+                                onAbrirWebView(BANDEJA_DE_SOLICITUDES)                            },
                         tint = Color(0xFF7599B6)
                     )
                 }

@@ -149,7 +149,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 onForgotPassword = {
-                                    val url = WebViewURL.forgotPassword
+                                    val url = WebViewURL.FORGOT_PASSWORD
                                     val intent = Intent(Intent.ACTION_VIEW, url.toUri())
                                     startActivity(intent)
                                 }
