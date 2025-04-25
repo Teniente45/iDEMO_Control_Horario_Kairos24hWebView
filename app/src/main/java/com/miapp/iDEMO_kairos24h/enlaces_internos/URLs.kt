@@ -3,7 +3,7 @@ package com.miapp.iDEMO_kairos24h.enlaces_internos
 import android.content.Context
 
 // Estás son las URL que se nos mostrarán en el WebView
-    object WebViewURL {
+object WebViewURL {
     /**
      * Beiman = https://beimancpp.tucitamedica.es
      * Kairos24h = https://controlhorario.kairos24h.es
@@ -11,7 +11,7 @@ import android.content.Context
      */
 
 
-    const val HOST = "https://democontrolhorario.kairos24h.es"
+    const val HOST = "https://sermanten.kairos24h.es"
     //const val HOST = "http://192.168.25.67:8008/kairos24h"
     const val ENTRY_POINT = "/index.php"
     const val URL_USADA = "$HOST$ENTRY_POINT"
@@ -44,7 +44,7 @@ object BuildURL {
      */
 
     /*==================================================================*/
-    const val HOST = "https://democontrolhorario.kairos24h.es"
+    const val HOST = "https://sermanten.kairos24h.es"
     //const val HOST = "http://192.168.25.67:8008/kairos24h"
 
     const val ENTRY_POINT = "/index.php"
@@ -57,6 +57,7 @@ object BuildURL {
     const val X_GRUPO = ""
     const val C_KIOSKO = ""
     const val C_FIC_ORI = "APP"
+    const val X_ENTIDAD = "1005"
 
 
     fun getStaticParams(context: Context): String {
@@ -64,10 +65,11 @@ object BuildURL {
         val xEntidad = creds.xEntidad ?: ""
         val xEmpleado = creds.xEmpleado ?: ""
         return "&xGrupo=$X_GRUPO" +
-               "&xEntidad=$xEntidad" +
-               "&xEmpleado=$xEmpleado" +
-               "&cKiosko=$C_KIOSKO" +
-               "&cDomFicOri=$C_FIC_ORI"
+                //"&xEntidad=$xEntidad" +
+                "&xEntidad=$X_ENTIDAD" + // Está Hardcodeado hasta que obtengamos el xEntidad del JSON
+                "&xEmpleado=$xEmpleado" +
+                "&cKiosko=$C_KIOSKO" +
+                "&cDomFicOri=$C_FIC_ORI"
     }
 
     const val URL_USADA = "$HOST$ENTRY_POINT?"
