@@ -67,7 +67,7 @@ import androidx.compose.ui.zIndex
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.BANDEJA_DE_SOLICITUDES
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.SOLICITUDES
 import com.miapp.iDEMO_kairos24h.fichar
-import com.miapp.iDEMO_kairos24hXsermanten.R
+import com.miapp.iDEMO_kairos24hXtragabuche.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -199,7 +199,7 @@ fun Logo_cliente() {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.sermanten_kairos24h),
+            painter = painterResource(id = R.drawable.tragabuche_kairos24h),
             contentDescription = "Logo i3data",
             contentScale = ContentScale.Fit, // Ajusta la imagen para que se vea completa
             modifier = Modifier

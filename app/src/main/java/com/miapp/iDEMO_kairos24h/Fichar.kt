@@ -71,7 +71,7 @@ import com.miapp.iDEMO_kairos24h.enlaces_internos.ManejoDeSesion
 import com.miapp.iDEMO_kairos24h.enlaces_internos.MensajeAlerta
 import com.miapp.iDEMO_kairos24h.enlaces_internos.SeguridadUtils
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL
-import com.miapp.iDEMO_kairos24hXsermanten.R
+import com.miapp.iDEMO_kairos24hXtragabuche.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
