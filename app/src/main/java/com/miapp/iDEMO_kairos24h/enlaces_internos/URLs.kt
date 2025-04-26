@@ -42,7 +42,7 @@ object BuildURL {
     const val X_GRUPO = ""
     const val C_KIOSKO = ""
     const val C_FIC_ORI = "APP"
-    const val X_ENTIDAD = "1005"
+    const val X_ENTIDAD = "1006"
 
 
     fun getStaticParams(context: Context): String {
