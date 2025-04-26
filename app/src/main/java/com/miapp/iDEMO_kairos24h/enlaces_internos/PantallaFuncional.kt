@@ -64,10 +64,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
-import com.miapp.iDEMO_kairos24h.R
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.BANDEJA_DE_SOLICITUDES
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL.SOLICITUDES
 import com.miapp.iDEMO_kairos24h.fichar
+import com.miapp.iDEMO_kairos24hXsermanten.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -113,7 +113,7 @@ fun CuadroParaFichar(
                         Text(text = fichaje, color = Color.DarkGray)
                     }
                 }
-                Logo_empresa()
+                Logo_cliente()
                 MiHorario()
                 BotonesFichajeConPermisos(
                     onFichaje = onFichaje,
@@ -121,15 +121,12 @@ fun CuadroParaFichar(
                     webView = webViewState.value ?: return@CuadroParaFichar
                 )
                 rememberDatosHorario()
-
                 RecuadroFichajesDia()
-
-                // Bloque "Solicitudes" añadido justo encima de AlertasDiarias
                 RecuadroSolicitudes { url -> webViewState.value?.loadUrl(url) }
-
                 AlertasDiarias { url ->
                     webViewState.value?.loadUrl(url)
                 }
+                Logo_desarrollador()
             }
         }
     }
@@ -194,7 +191,26 @@ fun RecuadroSolicitudes(onAbrirWebView: (String) -> Unit) {
 
 
 @Composable
-fun Logo_empresa() {
+fun Logo_cliente() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .offset(y = (-10).dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.sermanten_kairos24h),
+            contentDescription = "Logo i3data",
+            contentScale = ContentScale.Fit, // Ajusta la imagen para que se vea completa
+            modifier = Modifier
+                .width(340.dp)
+                .height(150.dp)
+        )
+    }
+}
+
+@Composable
+fun Logo_desarrollador() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -211,6 +227,7 @@ fun Logo_empresa() {
         )
     }
 }
+
 data class DatosHorario(
     val fechaFormateada: String,
     val fechaSeleccionada: String,
@@ -280,7 +297,7 @@ fun MiHorario() {
 
                 if (!response.isSuccessful || cleanedBody.isNullOrEmpty()) {
                     Log.e("MiHorario", "Error: ${response.code}")
-                    "Error al obtener horario"
+                    "No Horario"
                 } else {
                     try {
                         val json = JSONObject(cleanedBody)
@@ -293,7 +310,7 @@ fun MiHorario() {
                             Log.d("MiHorario", "Valor N_HORFIN: $horaFin")
 
                             if (horaIni == 0 && horaFin == 0) {
-                                "No se detectaron fichajes este día"
+                                "No Horarios"
                             } else {
                                 fun minutosAHora(minutos: Int): String {
                                     val horas = minutos / 60
