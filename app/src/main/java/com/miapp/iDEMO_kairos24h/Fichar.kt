@@ -560,6 +560,10 @@ fun BottomNavigationBar(
             hideCuadroParaFichar()
             onNavigate(WebViewURL.HORARIOS)
         }
+        NavigationButton("Solicitudes", R.drawable.solicitudes32) {
+            hideCuadroParaFichar()
+            onNavigate(WebViewURL.SOLICITUDES)
+        }
     }
 }
 
