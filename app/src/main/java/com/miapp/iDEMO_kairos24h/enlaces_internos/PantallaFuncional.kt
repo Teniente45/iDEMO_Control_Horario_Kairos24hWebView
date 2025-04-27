@@ -122,7 +122,6 @@ fun CuadroParaFichar(
                 )
                 rememberDatosHorario()
                 RecuadroFichajesDia()
-                RecuadroSolicitudes { url -> webViewState.value?.loadUrl(url) }
                 AlertasDiarias { url ->
                     webViewState.value?.loadUrl(url)
                 }
@@ -131,64 +130,6 @@ fun CuadroParaFichar(
         }
     }
 }
-
-
-@Composable
-fun RecuadroSolicitudes(onAbrirWebView: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        border = BorderStroke(1.dp, Color.LightGray),
-        shape = RoundedCornerShape(4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFF7599B6))
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = "Solicitudes",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = {
-                        onAbrirWebView(SOLICITUDES)
-                    },
-                    shape = RoundedCornerShape(6.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7599B6))
-                ) {
-                    Text(text = "Ver solicitudes", color = Color.White)
-                }
-
-                Button(
-                    onClick = {
-                        // Esto simula click en el botón que abre el modal de creación de solicitud
-                        onAbrirWebView("javascript:(function() { if (typeof createExplotacion === 'function') createExplotacion(); })()")
-                    },
-                    shape = RoundedCornerShape(6.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7599B6))
-                ) {
-                    Text(text = "Crear solicitud", color = Color.White)
-                }
-            }
-        }
-    }
-}
-
 
 @Composable
 fun Logo_cliente() {
