@@ -69,7 +69,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
-import com.miapp.iDEMO_kairos24h.R
+import com.miapp.Tragabuche.R
 import com.miapp.iDEMO_kairos24h.enlaces_internos.SeguridadUtils.ResultadoUbicacion
 import com.miapp.iDEMO_kairos24h.fichar
 import kotlinx.coroutines.CoroutineScope
@@ -162,12 +162,12 @@ fun Logo_empresa_cliente() {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.compliance_x_kairos24h),
+            painter = painterResource(id = R.drawable.tragabuche_x_kairos24h),
             contentDescription = "Logo del cliente",
             contentScale = ContentScale.Fit, // Ajusta la imagen para que se vea completa
             modifier = Modifier
-                .width(140.dp)
-                .height(100.dp)
+                .width(500.dp)
+                .height(150.dp)
         )
     }
 }

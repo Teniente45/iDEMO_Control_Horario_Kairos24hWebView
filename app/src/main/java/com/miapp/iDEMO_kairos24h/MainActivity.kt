@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -58,6 +59,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.miapp.Tragabuche.R
 import com.miapp.iDEMO_kairos24h.enlaces_internos.AuthManager
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL
 import kotlinx.coroutines.Dispatchers
@@ -256,15 +258,19 @@ class MainActivity : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Box(modifier = Modifier.padding(24.dp)) {
+            Box(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .offset(y = (-40).dp)
+            ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     // 🔥 Logo de la app
                     Image(
-                        painter = painterResource(id = R.drawable.compliance),
+                        painter = painterResource(id = R.drawable.tragabuche),
                         contentDescription = "Logo",
                         modifier = Modifier
-                            .width(200.dp)
-                            .height(60.dp)
+                            .width(500.dp)
+                            .height(150.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -310,7 +316,9 @@ class MainActivity : ComponentActivity() {
                     // 🔥 Checkbox para guardar datos localmente
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp)
                     ) {
                         Checkbox(
                             checked = isChecked,
@@ -335,7 +343,9 @@ class MainActivity : ComponentActivity() {
                     // 🔥 Checkbox obligatorio para aceptar permisos de ubicación
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp)
                     ) {
                         Checkbox(
                             checked = isLocationChecked,
