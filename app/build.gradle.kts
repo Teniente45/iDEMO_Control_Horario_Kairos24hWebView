@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.miapp.Tragabuche"
+    namespace = "com.miapp.Beiman"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.miapp.Tragabuche"
+        applicationId = "com.miapp.Beiman"
         minSdk = 28
         targetSdk = 35
         versionCode = 1

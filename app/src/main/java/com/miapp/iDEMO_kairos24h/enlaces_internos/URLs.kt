@@ -5,7 +5,7 @@ import android.content.Context
 // Estás son las URL que se nos mostrarán en el WebView
 object WebViewURL {
 
-    const val HOST = "https://democontrolhorario.kairos24h.es"
+    const val HOST = "https://beimancpp.tucitamedica.es"
 
     const val ENTRY_POINT = "/index.php"
     const val URL_USADA = "$HOST$ENTRY_POINT"
@@ -30,7 +30,7 @@ object WebViewURL {
 // Esta será la URL que construiremos cuando desde el login de nuestra APK introduzcamos el Usuario y la Contraseña
 object BuildURL {
 
-    const val HOST = "https://democontrolhorario.kairos24h.es"
+    const val HOST = "https://beimancpp.tucitamedica.es"
 
     const val ENTRY_POINT = "/index.php"
     const val ACTION_FICHAJE = "r=explotacion/creaFichaje"

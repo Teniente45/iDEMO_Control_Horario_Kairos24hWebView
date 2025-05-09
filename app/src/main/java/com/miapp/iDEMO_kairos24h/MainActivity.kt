@@ -59,7 +59,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.miapp.Tragabuche.R
+import com.miapp.Beiman.R
 import com.miapp.iDEMO_kairos24h.enlaces_internos.AuthManager
 import com.miapp.iDEMO_kairos24h.enlaces_internos.WebViewURL
 import kotlinx.coroutines.Dispatchers
@@ -266,7 +266,7 @@ class MainActivity : ComponentActivity() {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     // 🔥 Logo de la app
                     Image(
-                        painter = painterResource(id = R.drawable.tragabuche),
+                        painter = painterResource(id = R.drawable.beiman),
                         contentDescription = "Logo",
                         modifier = Modifier
                             .width(500.dp)
