@@ -300,37 +300,6 @@ fun FicharScreen(
                                 // Inyecta jQuery, jQuery UI y selectpicker y fuerza el renderizado correcto y visibilidad de paneles
                                 view?.evaluateJavascript("""
     (function() {
-        // Carga jQuery si no está presente
-        if (typeof jQuery == 'undefined') {
-            var jq = document.createElement('script');
-            jq.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-            document.head.appendChild(jq);
-        }
-
-        // Carga jQuery UI si no está presente
-        if (typeof jQuery.ui == 'undefined') {
-            var scriptUI = document.createElement('script');
-            scriptUI.src = 'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js';
-            document.head.appendChild(scriptUI);
-
-            var linkUI = document.createElement('link');
-            linkUI.rel = 'stylesheet';
-            linkUI.href = 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css';
-            document.head.appendChild(linkUI);
-        }
-
-        // Carga Bootstrap selectpicker si no está presente
-        if (typeof $.fn.selectpicker == 'undefined') {
-            var scriptSP = document.createElement('script');
-            scriptSP.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js';
-            document.head.appendChild(scriptSP);
-
-            var linkSP = document.createElement('link');
-            linkSP.rel = 'stylesheet';
-            linkSP.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css';
-            document.head.appendChild(linkSP);
-        }
-
         // Autocompleta el login y envía el formulario
         document.getElementsByName('LoginForm[username]')[0].value = '$usuario';
         document.getElementsByName('LoginForm[password]')[0].value = '$password';
@@ -368,49 +337,7 @@ fun FicharScreen(
             }
         }, 3000);
     })();
-""".trimIndent(), null)
-                                // Fuerza visibilidad de los formularios y elimina .noDisplay de inmediato (versión mejorada)
-                                view?.evaluateJavascript("""
-    (function() {
-        function forzarVisibilidadFormularios() {
-            const forms = document.querySelectorAll("#incidencias-form, #solicitudes-form");
-            forms.forEach(function(form) {
-                form.style.display = "block";
-                form.style.visibility = "visible";
-                form.style.opacity = "1";
-                form.style.maxHeight = "none";
-                form.style.height = "auto";
 
-                const panel = form.closest('.panel');
-                if (panel) {
-                    panel.style.display = "block";
-                    panel.style.visibility = "visible";
-                    panel.style.opacity = "1";
-                    panel.style.maxHeight = "none";
-                    panel.style.height = "auto";
-                    panel.style.zIndex = "9999";
-                }
-            });
-        }
-
-        // Aplica visibilidad inmediata si ya existen
-        forzarVisibilidadFormularios();
-
-        // Observa si se cargan dinámicamente más tarde
-        const observer = new MutationObserver(function(mutations) {
-            forzarVisibilidadFormularios();
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        // Elimina clase .noDisplay y aplica visibilidad
-        const noDisplayElements = document.querySelectorAll('.noDisplay');
-        noDisplayElements.forEach(el => {
-            el.classList.remove('noDisplay');
-            el.style.display = 'block';
-            el.style.visibility = 'visible';
-            el.style.opacity = '1';
-        });
-    })();
 """.trimIndent(), null)
                                 // Observa la aparición dinámica de formularios y fuerza visibilidad SOLO si están dentro del contenedor correcto
                                 view?.evaluateJavascript("""
@@ -475,57 +402,6 @@ fun FicharScreen(
             }
         });
         observer.observe(document.body, { childList: true, subtree: true });
-    })();
-""".trimIndent(), null)
-                                // Fuerza la expansión del panel #cuerpoFormExplotacion aunque el evento data-toggle no funcione
-                                view?.evaluateJavascript("""
-    (function() {
-        const target = document.getElementById("cuerpoFormExplotacion");
-        if (target) {
-            target.style.display = "block";
-            target.style.visibility = "visible";
-            target.style.opacity = "1";
-            target.style.maxHeight = "none";
-            target.setAttribute("aria-expanded", "true");
-            console.log("🟢 cuerpoFormExplotacion forzado a visible");
-        } else {
-            console.warn("⚠️ No se encontró cuerpoFormExplotacion");
-        }
-    })();
-""".trimIndent(), null)
-                                // Fuerza la visibilidad del panel de incidencias y el bloque #cuerpoFormExplotacion
-                                view?.evaluateJavascript("""
-    (function() {
-        // Fuerza la visibilidad del contenedor de incidencias
-        const panelIncidencias = Array.from(document.querySelectorAll('.panel.panel-primary'))
-            .find(panel => panel.textContent.includes('INCIDENCIAS'));
-
-        if (panelIncidencias) {
-            panelIncidencias.style.display = "block";
-            panelIncidencias.style.visibility = "visible";
-            panelIncidencias.style.opacity = "1";
-            panelIncidencias.style.maxHeight = "none";
-            panelIncidencias.style.height = "auto";
-        }
-
-        const cuerpo = document.getElementById("cuerpoFormExplotacion");
-        if (cuerpo) {
-            cuerpo.style.display = "block";
-            cuerpo.style.visibility = "visible";
-            cuerpo.style.opacity = "1";
-            cuerpo.style.maxHeight = "none";
-            cuerpo.style.height = "auto";
-            cuerpo.setAttribute("aria-expanded", "true");
-        }
-
-        // Elimina clases que podrían estar ocultando el panel
-        const ocultos = document.querySelectorAll('.noDisplay, .collapse, .hidden');
-        ocultos.forEach(el => {
-            el.classList.remove('noDisplay', 'collapse', 'hidden');
-            el.style.display = "block";
-            el.style.visibility = "visible";
-            el.style.opacity = "1";
-        });
     })();
 """.trimIndent(), null)
                             }
