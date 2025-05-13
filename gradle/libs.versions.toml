@@ -8,6 +8,7 @@ coilCompose = "2.1.0"
 coilComposeVersion = "2.2.2"
 compiler = "1.5.15"
 foundationVersion = "1.7.8"
+geckoview = "122.0.20240118164603"
 glide = "4.15.1"
 kotlin = "2.0.0"
 agp = "8.8.2"
@@ -79,6 +80,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose"
 coil-compose-v222 = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
 coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coilComposeVersion" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+geckoview = { module = "org.mozilla.geckoview:geckoview", version.ref = "geckoview" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

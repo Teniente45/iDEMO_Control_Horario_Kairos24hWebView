@@ -297,29 +297,237 @@ fun FicharScreen(
                         webViewClient = object : WebViewClient() {
                             override fun onPageFinished(view: WebView?, url: String?) {
                                 super.onPageFinished(view, url)
+                                // Inyecta jQuery, jQuery UI y selectpicker y fuerza el renderizado correcto y visibilidad de paneles
+                                view?.evaluateJavascript("""
+    (function() {
+        // Carga jQuery si no está presente
+        if (typeof jQuery == 'undefined') {
+            var jq = document.createElement('script');
+            jq.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+            document.head.appendChild(jq);
+        }
 
-                                view?.evaluateJavascript(
-                                    """
-                                    (function() {
-                                        document.getElementsByName('LoginForm[username]')[0].value = '$usuario';
-                                        document.getElementsByName('LoginForm[password]')[0].value = '$password';
-                                        document.querySelector('form').submit();
-                                        
-                                        setTimeout(function() {
-                                            var panels = document.querySelectorAll('.panel, .panel-body, .panel-heading');
-                                            panels.forEach(function(panel) {
-                                                panel.style.display = 'block';
-                                                panel.style.visibility = 'visible';
-                                                panel.style.opacity = '1';
-                                                panel.style.maxHeight = 'none';
-                                            });
-                                            document.body.style.overflow = 'auto';
-                                            document.documentElement.style.overflow = 'auto';
-                                        }, 3000);
-                                    })();
-                                    """.trimIndent(),
-                                    null
-                                )
+        // Carga jQuery UI si no está presente
+        if (typeof jQuery.ui == 'undefined') {
+            var scriptUI = document.createElement('script');
+            scriptUI.src = 'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js';
+            document.head.appendChild(scriptUI);
+
+            var linkUI = document.createElement('link');
+            linkUI.rel = 'stylesheet';
+            linkUI.href = 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css';
+            document.head.appendChild(linkUI);
+        }
+
+        // Carga Bootstrap selectpicker si no está presente
+        if (typeof $.fn.selectpicker == 'undefined') {
+            var scriptSP = document.createElement('script');
+            scriptSP.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js';
+            document.head.appendChild(scriptSP);
+
+            var linkSP = document.createElement('link');
+            linkSP.rel = 'stylesheet';
+            linkSP.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css';
+            document.head.appendChild(linkSP);
+        }
+
+        // Autocompleta el login y envía el formulario
+        document.getElementsByName('LoginForm[username]')[0].value = '$usuario';
+        document.getElementsByName('LoginForm[password]')[0].value = '$password';
+        document.querySelector('form').submit();
+
+        setTimeout(function() {
+            const visibles = document.querySelectorAll(
+                '.panel, .panel-primary, .panel-body, .panel-heading, .modal-header, .form, .row, .form-group, input, select, textarea'
+            );
+            visibles.forEach(el => {
+                el.style.display = 'block';
+                el.style.visibility = 'visible';
+                el.style.opacity = '1';
+                el.style.maxHeight = 'initial';
+                el.style.height = 'auto';
+            });
+
+            // Expande panel colapsado si existe
+            const colapsable = document.querySelector('#cuerpoFormExplotacion');
+            if (colapsable) {
+                colapsable.classList.add('in');
+                colapsable.style.display = 'block';
+                colapsable.style.maxHeight = 'none';
+                colapsable.style.opacity = '1';
+                colapsable.style.visibility = 'visible';
+            }
+
+            // Reactiva scroll por si se había bloqueado
+            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = 'auto';
+
+            // Inicializa selectpicker si está presente
+            if (typeof $ !== 'undefined' && $('.selectpicker').length > 0) {
+                $('.selectpicker').selectpicker('refresh');
+            }
+        }, 3000);
+    })();
+""".trimIndent(), null)
+                                // Fuerza visibilidad de los formularios y elimina .noDisplay de inmediato (versión mejorada)
+                                view?.evaluateJavascript("""
+    (function() {
+        function forzarVisibilidadFormularios() {
+            const forms = document.querySelectorAll("#incidencias-form, #solicitudes-form");
+            forms.forEach(function(form) {
+                form.style.display = "block";
+                form.style.visibility = "visible";
+                form.style.opacity = "1";
+                form.style.maxHeight = "none";
+                form.style.height = "auto";
+
+                const panel = form.closest('.panel');
+                if (panel) {
+                    panel.style.display = "block";
+                    panel.style.visibility = "visible";
+                    panel.style.opacity = "1";
+                    panel.style.maxHeight = "none";
+                    panel.style.height = "auto";
+                    panel.style.zIndex = "9999";
+                }
+            });
+        }
+
+        // Aplica visibilidad inmediata si ya existen
+        forzarVisibilidadFormularios();
+
+        // Observa si se cargan dinámicamente más tarde
+        const observer = new MutationObserver(function(mutations) {
+            forzarVisibilidadFormularios();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Elimina clase .noDisplay y aplica visibilidad
+        const noDisplayElements = document.querySelectorAll('.noDisplay');
+        noDisplayElements.forEach(el => {
+            el.classList.remove('noDisplay');
+            el.style.display = 'block';
+            el.style.visibility = 'visible';
+            el.style.opacity = '1';
+        });
+    })();
+""".trimIndent(), null)
+                                // Observa la aparición dinámica de formularios y fuerza visibilidad SOLO si están dentro del contenedor correcto
+                                view?.evaluateJavascript("""
+    (function() {
+        const observer = new MutationObserver(() => {
+            // Detecta si se ha insertado el contenedor con el ID esperado y contiene un formulario
+            const contenedor = document.querySelector("#dialogMttoExplotacion .form");
+            const formulario = contenedor?.querySelector("form");
+
+            if (formulario && contenedor) {
+                // Fuerza visibilidad solo dentro del contenedor correcto
+                contenedor.style.display = "block";
+                contenedor.style.visibility = "visible";
+                contenedor.style.opacity = "1";
+                contenedor.style.maxHeight = "none";
+                contenedor.style.height = "auto";
+                contenedor.style.zIndex = "9999";
+
+                formulario.style.display = "block";
+                formulario.style.visibility = "visible";
+                formulario.style.opacity = "1";
+                formulario.style.maxHeight = "none";
+                formulario.style.height = "auto";
+
+                // Aplica visibilidad a todos los elementos internos del formulario
+                const elementos = formulario.querySelectorAll("input, select, textarea, .form-group, .panel, .panel-body, .modal-header, .row");
+                elementos.forEach(el => {
+                    el.style.display = "block";
+                    el.style.visibility = "visible";
+                    el.style.opacity = "1";
+                    el.style.maxHeight = "none";
+                    el.style.height = "auto";
+                });
+
+                // Expande también el contenedor principal .ui-dialog-content y .ui-dialog
+                const dialogContent = contenedor.closest('.ui-dialog-content');
+                if (dialogContent) {
+                    dialogContent.style.display = "block";
+                    dialogContent.style.visibility = "visible";
+                    dialogContent.style.opacity = "1";
+                    dialogContent.style.maxHeight = "none";
+                    dialogContent.style.height = "auto";
+                    dialogContent.style.overflow = "visible";
+                }
+
+                const dialogWrapper = dialogContent?.closest('.ui-dialog');
+                if (dialogWrapper) {
+                    dialogWrapper.style.display = "block";
+                    dialogWrapper.style.visibility = "visible";
+                    dialogWrapper.style.opacity = "1";
+                    dialogWrapper.style.maxHeight = "none";
+                    dialogWrapper.style.height = "auto";
+                    dialogWrapper.style.overflow = "visible";
+                    dialogWrapper.style.overflowY = "auto";
+                    dialogWrapper.style.top = "10px";
+                    dialogWrapper.style.position = "absolute";
+                    dialogWrapper.style.paddingTop = "20px";
+                    dialogWrapper.style.paddingBottom = "20px";
+                }
+
+                observer.disconnect(); // Detiene el observador
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    })();
+""".trimIndent(), null)
+                                // Fuerza la expansión del panel #cuerpoFormExplotacion aunque el evento data-toggle no funcione
+                                view?.evaluateJavascript("""
+    (function() {
+        const target = document.getElementById("cuerpoFormExplotacion");
+        if (target) {
+            target.style.display = "block";
+            target.style.visibility = "visible";
+            target.style.opacity = "1";
+            target.style.maxHeight = "none";
+            target.setAttribute("aria-expanded", "true");
+            console.log("🟢 cuerpoFormExplotacion forzado a visible");
+        } else {
+            console.warn("⚠️ No se encontró cuerpoFormExplotacion");
+        }
+    })();
+""".trimIndent(), null)
+                                // Fuerza la visibilidad del panel de incidencias y el bloque #cuerpoFormExplotacion
+                                view?.evaluateJavascript("""
+    (function() {
+        // Fuerza la visibilidad del contenedor de incidencias
+        const panelIncidencias = Array.from(document.querySelectorAll('.panel.panel-primary'))
+            .find(panel => panel.textContent.includes('INCIDENCIAS'));
+
+        if (panelIncidencias) {
+            panelIncidencias.style.display = "block";
+            panelIncidencias.style.visibility = "visible";
+            panelIncidencias.style.opacity = "1";
+            panelIncidencias.style.maxHeight = "none";
+            panelIncidencias.style.height = "auto";
+        }
+
+        const cuerpo = document.getElementById("cuerpoFormExplotacion");
+        if (cuerpo) {
+            cuerpo.style.display = "block";
+            cuerpo.style.visibility = "visible";
+            cuerpo.style.opacity = "1";
+            cuerpo.style.maxHeight = "none";
+            cuerpo.style.height = "auto";
+            cuerpo.setAttribute("aria-expanded", "true");
+        }
+
+        // Elimina clases que podrían estar ocultando el panel
+        const ocultos = document.querySelectorAll('.noDisplay, .collapse, .hidden');
+        ocultos.forEach(el => {
+            el.classList.remove('noDisplay', 'collapse', 'hidden');
+            el.style.display = "block";
+            el.style.visibility = "visible";
+            el.style.opacity = "1";
+        });
+    })();
+""".trimIndent(), null)
                             }
                         }
 
