@@ -20,8 +20,10 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.webkit.CookieManager
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -64,6 +66,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -199,7 +202,6 @@ fun FicharScreen(
     // Recupera el nombre de usuario desde las preferencias o usa valor por defecto
     val cUsuario = sharedPreferences.getString("usuario", "Usuario") ?: "Usuario"
     // Determina si deben mostrarse los botones de fichaje en la interfaz
-    val mostrarBotonesFichaje = sharedPreferences.getString("lBotonesFichajeMovil", "S")?.equals("S", ignoreCase = true) == true
 
     // Simula carga inicial de 1,5 segundos antes de mostrar contenido
     LaunchedEffect(Unit) {
@@ -278,12 +280,12 @@ fun FicharScreen(
                         isVerticalScrollBarEnabled = true
                         isHorizontalScrollBarEnabled = true
 
-                        webChromeClient = object : android.webkit.WebChromeClient() {
+                        webChromeClient = object : WebChromeClient() {
                             override fun onCreateWindow(
                                 view: WebView?,
                                 isDialog: Boolean,
                                 isUserGesture: Boolean,
-                                resultMsg: android.os.Message?
+                                resultMsg: Message?
                             ): Boolean {
                                 val newWebView = WebView(view!!.context)
                                 newWebView.settings.javaScriptEnabled = true
@@ -359,7 +361,10 @@ fun FicharScreen(
                                 context,
                                 onLocationObtained = { lat, lon ->
                                     if (lat == 0.0 || lon == 0.0) {
-                                        Log.e("Fichar", "Ubicación inválida, no se enviará el fichaje")
+                                        Log.e(
+                                            "Fichar",
+                                            "Ubicación inválida, no se enviará el fichaje"
+                                        )
                                         fichajeAlertTipo = "Ubicación inválida"
                                         return@obtenerCoord
                                     }
@@ -374,7 +379,7 @@ fun FicharScreen(
                             fichajeAlertTipo = alertTipo
                         },
                         webViewState = webViewState,
-                        mostrarBotonesFichaje = mostrarBotonesFichaje
+                        mostrarBotonesFichaje = true
                     )
                 }
             }
@@ -483,7 +488,7 @@ fun FicharScreen(
 }
 
 @Composable
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Preview(showBackground = true)
 fun PreviewFicharScreen() {
     FicharScreen(
         usuario = "demoUsuario",
