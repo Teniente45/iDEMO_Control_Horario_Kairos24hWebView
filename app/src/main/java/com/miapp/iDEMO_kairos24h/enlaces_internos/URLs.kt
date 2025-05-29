@@ -23,7 +23,7 @@ object ImagenesApp {
     // Imagen del logo principal que se muestra en la pantalla de login
     @DrawableRes
     val logoCliente = R.drawable.kairos24h
-    val logoCliente_x_programa = R.drawable.compliance
+    val logoCliente_x_programa = R.drawable.tragabuche
     val lodoDesarrolladora = R.drawable.logo_i3data
 
 
