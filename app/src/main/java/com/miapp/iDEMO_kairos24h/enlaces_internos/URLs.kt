@@ -34,8 +34,8 @@ object ImagenesApp {
         .padding(vertical = 5.dp)
     // Estilo aplicado al logo (tamaño y proporción)
     val logoModifier = Modifier
-        .width(188.dp)
-        .height(75.dp)
+        .width(356.dp)
+        .height(100.dp)
 
 
     // Centraliza las características del contenedor del logo de desarrolladora
