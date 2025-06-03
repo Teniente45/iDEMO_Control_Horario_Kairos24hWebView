@@ -372,6 +372,9 @@ fun FicharScreen(
 
             // Cuadro emergente con botones de fichaje (Entrada/Salida) que solicita la ubicación GPS
             if (showCuadroParaFicharState.value) {
+                // Lógica para mostrar u ocultar los botones de fichaje según lBotonesFichajeMovil
+                val lBotonesFichajeMovil = sharedPreferences.getString("lBotonesFichajeMovil", "") ?: ""
+                val mostrarBotones = lBotonesFichajeMovil != "N"
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -401,7 +404,7 @@ fun FicharScreen(
                             fichajeAlertTipo = alertTipo
                         },
                         webViewState = remember { mutableStateOf(webView) },
-                        mostrarBotonesFichaje = true
+                        mostrarBotonesFichaje = mostrarBotones
                     )
                 }
             }

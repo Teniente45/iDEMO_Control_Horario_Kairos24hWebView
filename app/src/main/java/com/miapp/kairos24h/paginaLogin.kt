@@ -125,6 +125,7 @@ class MainActivity : ComponentActivity() {
                                                 runOnUiThread {
                                                     // Si la autenticación es exitosa y se obtiene xEmpleado, se guardan las credenciales y se navega a la pantalla de fichaje
                                                     if (success && xEmpleado != null) {
+                                                        // Añadimos lTipo a la llamada a saveUserCredentials
                                                         AuthManager.saveUserCredentials(
                                                             this@MainActivity,
                                                             xEmpleado.usuario,
@@ -136,7 +137,8 @@ class MainActivity : ComponentActivity() {
                                                             xEmpleado.xEntidad,
                                                             xEmpleado.sEmpleado,
                                                             xEmpleado.tUrlCPP,
-                                                            xEmpleado.tLogo
+                                                            xEmpleado.tLogo,
+                                                            xEmpleado.lTipo
                                                         )
                                                         navigateToFichar(xEmpleado.usuario, xEmpleado.password)
                                                     } else {

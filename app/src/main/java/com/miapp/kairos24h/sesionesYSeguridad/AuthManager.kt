@@ -27,7 +27,8 @@ data class UserCredentials(
     val xEntidad: String?,
     val sEmpleado: String,
     val tUrlCPP: String,
-    val tLogo: String
+    val tLogo: String,
+    val lTipo: String
 )
 
 object AuthManager {
@@ -45,10 +46,11 @@ object AuthManager {
         val sEmpleado = sharedPreferences.getString("sEmpleado", "") ?: ""
         val tUrlCPP = sharedPreferences.getString("tUrlCPP", "") ?: ""
         val tLogo = sharedPreferences.getString("tLogo", "") ?: ""
+        val lTipo = sharedPreferences.getString("lTipo", "") ?: ""
 
         Log.d(
             "getUserCredentials",
-            "usuario=$usuario, password=$password, xEmpleado=$xEmpleado, lComGPS=$lComGPS, lComIP=$lComIP, lBotonesFichajeMovil=$lBotonesFichajeMovil, xEntidad=$xEntidad, sEmpleado=$sEmpleado, tUrlCPP=$tUrlCPP, tLogo=$tLogo"
+            "usuario=$usuario, password=$password, xEmpleado=$xEmpleado, lComGPS=$lComGPS, lComIP=$lComIP, lBotonesFichajeMovil=$lBotonesFichajeMovil, xEntidad=$xEntidad, sEmpleado=$sEmpleado, tUrlCPP=$tUrlCPP, tLogo=$tLogo, lTipo=$lTipo"
         )
 
         return UserCredentials(
@@ -61,7 +63,8 @@ object AuthManager {
             xEntidad,
             sEmpleado,
             tUrlCPP,
-            tLogo
+            tLogo,
+            lTipo
         )
     }
 
@@ -78,7 +81,8 @@ object AuthManager {
         xEntidad: String?,
         sEmpleado: String,
         tUrlCPP: String,
-        tLogo: String
+        tLogo: String,
+        lTipo: String
     ) {
         val sharedPreferences = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
@@ -96,11 +100,12 @@ object AuthManager {
             putString("sEmpleado", sEmpleado)
             putString("tUrlCPP", tUrlCPP)
             putString("tLogo", tLogo)
+            putString("lTipo", lTipo)
             apply()
         }
         Log.d(
             "saveUserCredentials",
-            "usuario=$usuario, password=$password, xEmpleado=$xEmpleado, lComGPS=$lComGPS, lComIP=$lComIP, lBotonesFichajeMovil=$lBotonesFichajeMovil, xEntidad=$xEntidad, sEmpleado=$sEmpleado, tUrlCPP=$tUrlCPP, tLogo=$tLogo"
+            "usuario=$usuario, password=$password, xEmpleado=$xEmpleado, lComGPS=$lComGPS, lComIP=$lComIP, lBotonesFichajeMovil=$lBotonesFichajeMovil, xEntidad=$xEntidad, sEmpleado=$sEmpleado, tUrlCPP=$tUrlCPP, tLogo=$tLogo, lTipo=$lTipo"
         )
     }
 
@@ -134,10 +139,11 @@ object AuthManager {
                     val sEmpleado = jsonResponse.optString("sEmpleado", "")
                     val tUrlCPP = jsonResponse.optString("tUrlCPP", "")
                     val tLogo = jsonResponse.optString("tLogo", "")
+                    val lTipo = jsonResponse.optString("lTipo", "")
                     val credentials = UserCredentials(
                         usuario, password, xEmpleado,
                         lComGPS, lComIP, lBotonesFichajeMovil, xEntidad,
-                        sEmpleado, tUrlCPP, tLogo
+                        sEmpleado, tUrlCPP, tLogo, lTipo
                     )
                     Pair(true, credentials)
                 } else {
