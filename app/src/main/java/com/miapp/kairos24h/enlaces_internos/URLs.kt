@@ -111,7 +111,7 @@ object BuildURLmovil {
     const val ACTION_CONSULT_ALERTAS = "r=wsExterno/consultarAlertasExterno"
 
     fun getIndex(context: Context): String = getURLUsada(context) + ACTION_LOGIN
-    fun getForgotPassword(context: Context): String = getURLUsada(context) + "?" + ACTION_FORGOTPASS
+    fun getForgotPassword(context: Context): String = getURLUsada(context) + ACTION_FORGOTPASS
 
     fun getFichaje(context: Context): String = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=FICHAJE"
     fun getIncidencia(context: Context): String = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=INCIDENCIA&cOpcionVisual=INCBAN"

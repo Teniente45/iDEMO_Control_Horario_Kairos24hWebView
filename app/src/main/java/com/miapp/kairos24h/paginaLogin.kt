@@ -236,8 +236,6 @@ fun DisplayLogo(
     // Estado que almacena el texto ingresado en el campo de contraseña
     val password = remember { mutableStateOf("") }
 
-    // Controla si el usuario acepta guardar sus datos localmente
-    var isChecked by remember { mutableStateOf(false) }
     // Controla si la contraseña se muestra en texto plano o se oculta
     var passwordVisible by remember { mutableStateOf(false) }
     // Mensaje de error a mostrar si los datos de acceso son incorrectos
@@ -312,36 +310,54 @@ fun DisplayLogo(
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
                 )
 
-                // Opción para mostrar u ocultar la contraseña introducida
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                // Contenedor centralizado para las opciones
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp)
+                        .padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Checkbox(
-                        checked = passwordVisible,
-                        onCheckedChange = { passwordVisible = it }
-                    )
-                    Text(
-                        text = "Mostrar contraseña",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
+                    // Opción para mostrar u ocultar la contraseña introducida
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth(0.85f)
+                            .padding(top = 4.dp),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Checkbox(
+                            checked = passwordVisible,
+                            onCheckedChange = { passwordVisible = it }
+                        )
+                        Text(
+                            text = "Mostrar contraseña",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
 
-                // Opción para permitir guardar los datos de acceso localmente
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Checkbox(
-                        checked = isChecked,
-                        onCheckedChange = { isChecked = it }
-                    )
-                    Text(
-                        text = "Doy mi consentimiento para guardar mis datos localmente en mi dispositivo.",
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                    // Solicita al usuario que acepte el permiso de ubicación
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth(0.85f)
+                            .padding(top = 4.dp),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Checkbox(
+                            checked = isLocationChecked,
+                            onCheckedChange = { checked ->
+                                if (checked) {
+                                    requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                                } else {
+                                    isLocationChecked = false
+                                }
+                            }
+                        )
+                        Text(
+                            text = "Acepto que la app acceda a la ubicación donde ficho",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                 }
 
                 // Muestra un mensaje de error si existe
@@ -351,27 +367,6 @@ fun DisplayLogo(
                         color = Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
-
-                // Solicita al usuario que acepte el permiso de ubicación
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Checkbox(
-                        checked = isLocationChecked,
-                        onCheckedChange = { checked ->
-                            if (checked) {
-                                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                            } else {
-                                isLocationChecked = false
-                            }
-                        }
-                    )
-                    Text(
-                        text = "Acepto que la app acceda a la ubicación donde ficho",
-                        style = MaterialTheme.typography.bodySmall
                     )
                 }
 
@@ -390,7 +385,7 @@ fun DisplayLogo(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7599B6)),
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = usuario.value.isNotEmpty() && password.value.isNotEmpty() && isChecked && isLocationChecked
+                    enabled = usuario.value.isNotEmpty() && password.value.isNotEmpty() && isLocationChecked
                 ) {
                     Text("Acceso", color = Color.White)
                 }
