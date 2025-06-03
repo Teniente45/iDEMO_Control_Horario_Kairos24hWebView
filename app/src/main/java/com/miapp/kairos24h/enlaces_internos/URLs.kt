@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.width
 import com.miapp.kairos24h.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import android.widget.ImageView
+import coil.load
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.layout.ContentScale
@@ -159,6 +161,11 @@ object BuildURLtablet {
 }
 
 object ImagenesTablet {
+    // Permite reutilizar el valor de tLogo desde cualquier otro archivo
+    fun getLogoCliente(context: Context): String? {
+        val tLogo = AuthManager.getUserCredentials(context).tLogo
+        return if (tLogo.isNotBlank()) tLogo else null
+    }
     // Nombres de recursos en drawable
     const val LOGO_DESARROLLADORA = "logo_desarrolladora"
 
@@ -169,24 +176,6 @@ object ImagenesTablet {
         val marginTop: String = "0sp",
         val marginBottom: String = "0sp"
     )
-
-    @Composable
-    fun LogoClienteRemoto(modifier: Modifier = Modifier) {
-        val context = LocalContext.current
-        val logoUrl = ImagenesMovil.getLogoClienteXPrograma(context)
-        val painter = rememberAsyncImagePainter(
-            model = logoUrl,
-            contentScale = ContentScale.Fit,
-            placeholder = painterResource(id = R.drawable.kairos24h),
-            error = painterResource(id = R.drawable.kairos24h)
-        )
-
-        Image(
-            painter = painter,
-            contentDescription = "Logo del cliente",
-            modifier = modifier
-        )
-    }
 
     object Vertical {
         val LOGO_CLIENTE = PropiedadesImagen(
@@ -214,5 +203,15 @@ object ImagenesTablet {
             marginTop = "4dp",
             marginBottom = "4dp"
         )
+    }
+
+    fun cargarLogoClienteEnImageView(context: Context, imageView: ImageView) {
+        val tLogo = getLogoCliente(context)
+        if (!tLogo.isNullOrBlank()) {
+            imageView.load(tLogo) {
+                placeholder(R.drawable.kairos24h)
+                error(R.drawable.kairos24h)
+            }
+        }
     }
 }

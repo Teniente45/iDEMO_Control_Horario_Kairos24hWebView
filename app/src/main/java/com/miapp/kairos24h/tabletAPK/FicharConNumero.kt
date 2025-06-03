@@ -136,14 +136,8 @@ class MainActivity : AppCompatActivity() {
 
         // Cargar logos dinámicamente
         val logo1 = findViewById<ImageView>(R.id.logo1)
-        val tLogoUrl = ImagenesMovil.getLogoClienteXPrograma(this)
-        if (!tLogoUrl.isNullOrBlank()) {
-            Glide.with(this)
-                .load(tLogoUrl)
-                .placeholder(R.drawable.kairos24h)
-                .error(R.drawable.kairos24h)
-                .into(logo1)
-        }
+        ImagenesTablet.cargarLogoClienteEnImageView(this, logo1)
+        Log.d("LogoCliente", "URL del logo cargado: ${ImagenesTablet.getLogoCliente(this)}")
 
         val logo2 = findViewById<ImageView>(R.id.logo2)
         val logo2ResId = resources.getIdentifier(ImagenesTablet.LOGO_DESARROLLADORA, "drawable", packageName)
@@ -267,42 +261,10 @@ class MainActivity : AppCompatActivity() {
             resetearInactividad()
         }
 
-        // Detectar pulsación larga para salir de la app desde el logo (accesible y cumple con performClick)
-        val zonaSuperior = object : AppCompatImageView(this) {
-            override fun performClick(): Boolean {
-                super.performClick()
-                return true
-            }
-        }.apply {
-            layoutParams = logo1.layoutParams
-            setImageDrawable(logo1.drawable)
-            id = logo1.id
-        }
-        (logo1.parent as? ViewGroup)?.apply {
-            val index = indexOfChild(logo1)
-            removeView(logo1)
-            addView(zonaSuperior, index)
-        }
-        zonaSuperior.setOnTouchListener(object : View.OnTouchListener {
-            private var handler = Handler(Looper.getMainLooper())
-            private val longPressRunnable = Runnable {
-                mostrarDialogoConfirmacionSalida()
-            }
-
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                when (event?.action) {
-                    MotionEvent.ACTION_DOWN -> handler.postDelayed(longPressRunnable, 6000)
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        handler.removeCallbacks(longPressRunnable)
-                        v?.performClick()
-                    }
-                }
-                return true
-            }
-        })
-
-        zonaSuperior.setOnClickListener {
-            // Acción vacía, necesaria para accesibilidad y cumplimiento de performClick()
+        // Detectar pulsación larga para salir de la app desde el logo
+        logo1.setOnLongClickListener {
+            mostrarDialogoConfirmacionSalida()
+            true
         }
 
         // Activar temporizador de limpieza de inactividad

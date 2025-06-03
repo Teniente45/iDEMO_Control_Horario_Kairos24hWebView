@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.androidx.sqlite.ktx)
 
     // Imagen y multimedia
+    implementation("io.coil-kt:coil:2.4.0")
     implementation(libs.coil.compose.v222)
     implementation(libs.coil.gif)
     implementation(libs.coil.compose)
