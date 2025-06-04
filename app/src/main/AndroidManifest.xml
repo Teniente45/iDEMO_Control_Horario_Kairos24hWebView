@@ -50,7 +50,7 @@
             tools:ignore="DiscouragedApi,LockedOrientation,LockedOrientationActivity" />
 
         <activity
-            android:name="com.miapp.kairos24h.tabletAPK.MainActivity"
+            android:name="com.miapp.kairos24h.tabletAPK.MainActivityTablet"
             android:exported="true"
             android:theme="@style/Theme.RelojFichajesKairos24h"
             android:screenOrientation="fullSensor"

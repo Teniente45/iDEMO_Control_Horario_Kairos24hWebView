@@ -18,7 +18,6 @@ import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
@@ -31,15 +30,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.toColorInt
 import com.example.relojfichajeskairos24h.FichajesSQLiteHelper
 import com.example.relojfichajeskairos24h.iniciarReintentosAutomaticos
 import com.google.gson.Gson
+import com.miapp.kairos24h.MainActivity
 import com.miapp.kairos24h.enlaces_internos.BuildURLtablet
 import com.miapp.kairos24h.enlaces_internos.ImagenesTablet
-import com.miapp.kairos24h.enlaces_internos.ImagenesMovil
-import com.bumptech.glide.Glide
 import com.miapp.kairos24h.R
 import com.miapp.kairos24h.deviceOwner.MyDeviceAdminReceiver
 import com.miapp.kairos24h.sesionesYSeguridad.GPSUtils
@@ -49,7 +46,7 @@ import java.net.URL
 import java.net.URLEncoder
 
 // Actividad principal de la aplicación de fichaje Kairos24h
-class MainActivity : AppCompatActivity() {
+class MainActivityTablet : AppCompatActivity() {
 
     // Handler para manejar temporizadores en el hilo principal
     private val handler = Handler(Looper.getMainLooper())
@@ -280,7 +277,35 @@ class MainActivity : AppCompatActivity() {
     private fun mostrarDialogoConfirmacionSalida() {
         AlertDialog.Builder(this)
             .setTitle("¿Seguro que quieres salir?")
-            .setPositiveButton("Salir") { _, _ -> solicitarPinParaSalir() }
+            .setPositiveButton("Salir") { _, _ ->
+                // Borrar cookies
+                val cookieManager = android.webkit.CookieManager.getInstance()
+                cookieManager.removeAllCookies(null)
+                cookieManager.flush()
+
+                // Borrar caché WebView
+                try {
+                    val webView = android.webkit.WebView(this)
+                    webView.clearCache(true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                // Borrar datos del usuario
+                try {
+                    val clazz = Class.forName("com.miapp.kairos24h.sesionesYSeguridad.AuthManager")
+                    val method = clazz.getMethod("clearAllUserData", Context::class.java)
+                    method.invoke(null, this)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                // Redirigir a MainActivity
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
             .setNegativeButton("Cancelar", null)
             .show()
     }
@@ -422,7 +447,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("FichajeApp", "Respuesta del servidor: $responseText")
 
                     // Guardar respuesta en base de datos si corresponde
-                    val dbHelper = FichajesSQLiteHelper(this@MainActivity)
+                    val dbHelper = FichajesSQLiteHelper(this@MainActivityTablet)
                     val jsonResponse = JSONObject(responseText)
                     val codigoEmpleado = url.substringAfter("cEmpCppExt=").substringBefore("&").toString()
                     dbHelper.insertarFichajeDesdeJson(jsonResponse, codigoEmpleado)

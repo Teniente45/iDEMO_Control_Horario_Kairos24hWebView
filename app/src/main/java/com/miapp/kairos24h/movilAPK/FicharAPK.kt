@@ -165,6 +165,12 @@ class Fichar : ComponentActivity() {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
+                    // Decodifica la contraseña antes de insertarla en el formulario
+                    val passwordCodificada = AuthManager.getUserCredentials(this@Fichar).password
+                    val password = java.net.URLDecoder.decode(passwordCodificada, "UTF-8")
+                    // Decodifica el usuario antes de insertarlo en el formulario
+                    val usuarioCodificado = AuthManager.getUserCredentials(this@Fichar).usuario
+                    val usuario = java.net.URLDecoder.decode(usuarioCodificado, "UTF-8")
                     view?.evaluateJavascript(
                         """
                         (function() {
@@ -477,6 +483,7 @@ fun FicharScreen(
                             }
                             CookieManager.getInstance().removeAllCookies(null)
                             CookieManager.getInstance().flush()
+                            AuthManager.clearAllUserData(context)
                             onLogout()
                         },
                         modifier = Modifier.weight(1f),
@@ -689,21 +696,49 @@ fun BottomNavigationBar(
         // Botón de navegación que cambia de sección y oculta el cuadro para fichar
         NavigationButton("Fichajes", R.drawable.ic_fichajes32) {
             hideCuadroParaFichar()
+            val dominio = BuildURLmovil.getHost(context)
+            val cookieManager = CookieManager.getInstance()
+            val cookie = cookieManager.getCookie(dominio)
+            if (!cookie.isNullOrEmpty()) {
+                cookieManager.setCookie(dominio, cookie)
+                cookieManager.flush()
+            }
             onNavigate(BuildURLmovil.getFichaje(context))
         }
         // Botón de navegación que cambia de sección y oculta el cuadro para fichar
         NavigationButton("Incidencias", R.drawable.ic_incidencia32) {
             hideCuadroParaFichar()
+            val dominio = BuildURLmovil.getHost(context)
+            val cookieManager = CookieManager.getInstance()
+            val cookie = cookieManager.getCookie(dominio)
+            if (!cookie.isNullOrEmpty()) {
+                cookieManager.setCookie(dominio, cookie)
+                cookieManager.flush()
+            }
             onNavigate(BuildURLmovil.getIncidencia(context))
         }
         // Botón de navegación que cambia de sección y oculta el cuadro para fichar
         NavigationButton("Horarios", R.drawable.ic_horario32) {
             hideCuadroParaFichar()
+            val dominio = BuildURLmovil.getHost(context)
+            val cookieManager = CookieManager.getInstance()
+            val cookie = cookieManager.getCookie(dominio)
+            if (!cookie.isNullOrEmpty()) {
+                cookieManager.setCookie(dominio, cookie)
+                cookieManager.flush()
+            }
             onNavigate(BuildURLmovil.getHorarios(context))
         }
         // Botón de navegación que cambia de sección y oculta el cuadro para fichar
         NavigationButton("Solicitudes", R.drawable.solicitudes32) {
             hideCuadroParaFichar()
+            val dominio = BuildURLmovil.getHost(context)
+            val cookieManager = CookieManager.getInstance()
+            val cookie = cookieManager.getCookie(dominio)
+            if (!cookie.isNullOrEmpty()) {
+                cookieManager.setCookie(dominio, cookie)
+                cookieManager.flush()
+            }
             onNavigate(BuildURLmovil.getSolicitudes(context))
         }
     }

@@ -84,28 +84,31 @@ class MainActivity : ComponentActivity() {
         val prefs = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val isFirstRun = prefs.getBoolean("first_run", true)
         if (isFirstRun) {
-            // Limpiamos las credenciales para que se muestre siempre la pantalla de login en el primer arranque
-            clearCredentials()
+            // Limpiamos completamente todas las SharedPreferences usando AuthManager
+            AuthManager.clearAllUserData(this)
             prefs.edit { putBoolean("first_run", false) }
         }
 
         // Obtenemos las credenciales almacenadas (usuario, password y xEmpleado)
         val (storedUser, storedPassword, _) = AuthManager.getUserCredentials(this)
+        android.util.Log.d("SesionDebug", "storedUser='$storedUser' storedPassword='$storedPassword'")
 
-        if (storedUser.isNotEmpty() && storedPassword.isNotEmpty()) {
-            // Si existen credenciales, redirigimos según cTipEmp (forzado a TABLET)
-            val cTipEmp = "TABLET" // Valor fijo para forzar modo TABLET
+        if (storedUser.isNotBlank() && storedPassword.isNotBlank()) {
+            // Si existen credenciales, redirigimos según cTipEmp guardado en las credenciales
+            val cTipEmp = AuthManager.getUserCredentials(this).cTipEmp.uppercase()
             android.util.Log.d("Redireccion", "Valor de cTipEmp: $cTipEmp")
             if (cTipEmp == "TABLET") {
                 android.util.Log.d("Redireccion", "Iniciando MainActivity (modo TABLET)")
-                val intent = Intent(this@MainActivity, com.miapp.kairos24h.tabletAPK.MainActivity::class.java)
+                val intent = Intent(this@MainActivity, com.miapp.kairos24h.tabletAPK.MainActivityTablet::class.java)
                 startActivity(intent)
             } else {
                 android.util.Log.d("Redireccion", "Iniciando Fichar (modo APK)")
                 navigateToFichar(storedUser, storedPassword)
             }
         } else {
-            // Si no existen credenciales, mostramos la pantalla de inicio de sesión
+            AuthManager.clearAllUserData(this)
+            android.util.Log.d("SesionDebug", "Credenciales vacías: sesión eliminada")
+            // Mostrar pantalla de inicio de sesión
             setContent {
                 MaterialTheme {
                     val navController = rememberNavController()
@@ -153,7 +156,7 @@ class MainActivity : ComponentActivity() {
                                                         android.util.Log.d("Redireccion", "Valor de cTipEmp: $cTipEmp")
                                                         if (cTipEmp == "TABLET") {
                                                             android.util.Log.d("Redireccion", "Iniciando MainActivity (modo TABLET)")
-                                                            val intent = Intent(this@MainActivity, com.miapp.kairos24h.tabletAPK.MainActivity::class.java)
+                                                            val intent = Intent(this@MainActivity, com.miapp.kairos24h.tabletAPK.MainActivityTablet::class.java)
                                                             startActivity(intent)
                                                         } else {
                                                             android.util.Log.d("Redireccion", "Iniciando Fichar (modo APK)")
@@ -214,13 +217,13 @@ class MainActivity : ComponentActivity() {
 
     // Borra credenciales almacenadas para forzar nuevo login
     private fun clearCredentials() {
-        val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            remove("usuario")
-            remove("password")
-            remove("xEmpleado")
-            apply()
-        }
+        // Borra completamente los datos de la sesión del usuario
+        val userPrefs = getSharedPreferences("UserSession", MODE_PRIVATE)
+        userPrefs.edit().clear().apply()
+
+        // Borra completamente las preferencias generales de la app
+        val appPrefs = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        appPrefs.edit().clear().apply()
     }
     // Verifica si el dispositivo tiene conexión a Internet activa, ya sea por WiFi o datos móviles.
     private fun isInternetAvailable(context: Context): Boolean {
