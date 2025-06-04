@@ -82,7 +82,7 @@ object ImagenesMovil {
 
 // Estás son las URL que se nos mostrarán en el WebView, se usa sólo para logearse desde la APK
 object WebViewURL {
-    const val HOST = "https://controlhorario.kairos24h.es"
+    const val HOST = "https://beimancpp.tucitamedica.es"
     const val ENTRY_POINT = "/index.php"
     const val URL_USADA = "$HOST$ENTRY_POINT"
 
@@ -116,10 +116,29 @@ object BuildURLmovil {
     fun getIndex(context: Context): String = getURLUsada(context) + ACTION_LOGIN
     fun getForgotPassword(context: Context): String = getURLUsada(context) + ACTION_FORGOTPASS
 
-    fun getFichaje(context: Context): String = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=FICHAJE"
-    fun getIncidencia(context: Context): String = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=INCIDENCIA&cOpcionVisual=INCBAN"
-    fun getHorarios(context: Context): String = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=HORARIO&cModoVisual=HORMEN"
-    fun getSolicitudes(context: Context): String = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=SOLICITUD"
+    fun getFichaje(context: Context): String {
+        val url = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=FICHAJE"
+        android.util.Log.d("URL_Fichaje", "URL generada: $url")
+        return url
+    }
+
+    fun getIncidencia(context: Context): String {
+        val url = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=INCIDENCIA&cOpcionVisual=INCBAN"
+        android.util.Log.d("URL_Incidencia", "URL generada: $url")
+        return url
+    }
+
+    fun getHorarios(context: Context): String {
+        val url = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=HORARIO&cModoVisual=HORMEN"
+        android.util.Log.d("URL_Horarios", "URL generada: $url")
+        return url
+    }
+
+    fun getSolicitudes(context: Context): String {
+        val url = getURLUsada(context) + ACTION_CONSULTAR + "&cTipExp=SOLICITUD"
+        android.util.Log.d("URL_Solicitudes", "URL generada: $url")
+        return url
+    }
 
     const val X_GRUPO = ""
     const val C_KIOSKO = ""
@@ -152,16 +171,22 @@ object BuildURLtablet {
         android.util.Log.d("BuildURLtablet", "Host seleccionado: $hostFinal")
         return hostFinal
     }
-    const val ACTION = "index.php?r=citaRedWeb/crearFichajeExterno"
-    const val PARAMS = "&xEntidad=1006" +
-            "&cKiosko=TABLET1" +
-            "&cEmpCppExt=" +
-            "&cTipFic=" +
-            "&cFicOri=PUEFIC" +
-            "&tGPSLat=" +
-            "&tGPSLon="
 
-    fun getSetFichaje(context: Context): String = getHost(context) + "/" + ACTION + PARAMS
+    const val ACTION = "index.php?r=citaRedWeb/crearFichajeExterno"
+
+    fun getParams(context: Context): String {
+        val credenciales = AuthManager.getUserCredentials(context)
+        val xEntidad = credenciales.xEntidad
+        return "&xEntidad=$xEntidad" +
+                "&cKiosko=TABLET1" +
+                "&cEmpCppExt=" +
+                "&cTipFic=" +
+                "&cFicOri=PUEFIC" +
+                "&tGPSLat=" +
+                "&tGPSLon="
+    }
+
+    fun getSetFichaje(context: Context): String = getHost(context) + "/" + ACTION + getParams(context)
 }
 
 object ImagenesTablet {

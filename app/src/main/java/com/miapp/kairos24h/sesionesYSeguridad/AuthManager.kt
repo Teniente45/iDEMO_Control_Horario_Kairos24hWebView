@@ -158,4 +158,12 @@ object AuthManager {
             Pair(false, null)
         }
     }
+    // Borrar completamente los datos de usuario almacenados en SharedPreferences
+    fun clearAllUserData(context: Context) {
+        val userPrefs = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        userPrefs.edit().clear().apply()
+
+        val appPrefs = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        appPrefs.edit().clear().apply()
+    }
 }
