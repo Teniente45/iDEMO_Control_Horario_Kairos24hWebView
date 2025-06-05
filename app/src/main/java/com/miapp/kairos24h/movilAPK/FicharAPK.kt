@@ -264,11 +264,7 @@ class Fichar : ComponentActivity() {
         cookieManager.flush()
 
         val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            remove("usuario")
-            remove("password")
-            apply()
-        }
+        sharedPreferences.edit().clear().apply()
 
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

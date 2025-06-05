@@ -82,15 +82,15 @@ class MainActivity : ComponentActivity() {
 
         // Verificamos si es el primer arranque
         val prefs = getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        val isFirstRun = prefs.getBoolean("first_run", true)
-        if (isFirstRun) {
-            // Limpiamos completamente todas las SharedPreferences usando AuthManager
-            AuthManager.clearAllUserData(this)
-            prefs.edit { putBoolean("first_run", false) }
-        }
 
         // Obtenemos las credenciales almacenadas (usuario, password y xEmpleado)
         val (storedUser, storedPassword, _) = AuthManager.getUserCredentials(this)
+        // Log completo de todas las credenciales almacenadas
+        val credentials = AuthManager.getUserCredentials(this)
+        android.util.Log.d(
+            "CredencialesGuardadas",
+            "usuario=${credentials.usuario}, password=${credentials.password}, xEmpleado=${credentials.xEmpleado}, lComGPS=${credentials.lComGPS}, lComIP=${credentials.lComIP}, lBotonesFichajeMovil=${credentials.lBotonesFichajeMovil}, xEntidad=${credentials.xEntidad}, sEmpleado=${credentials.sEmpleado}, tUrlCPP=${credentials.tUrlCPP}, tLogo=${credentials.tLogo}, cTipEmp=${credentials.cTipEmp}"
+        )
         android.util.Log.d("SesionDebug", "storedUser='$storedUser' storedPassword='$storedPassword'")
 
         if (storedUser.isNotBlank() && storedPassword.isNotBlank()) {
@@ -106,9 +106,6 @@ class MainActivity : ComponentActivity() {
                 navigateToFichar(storedUser, storedPassword)
             }
         } else {
-            AuthManager.clearAllUserData(this)
-            android.util.Log.d("SesionDebug", "Credenciales vacías: sesión eliminada")
-            // Mostrar pantalla de inicio de sesión
             setContent {
                 MaterialTheme {
                     val navController = rememberNavController()
@@ -223,7 +220,7 @@ class MainActivity : ComponentActivity() {
 
         // Borra completamente las preferencias generales de la app
         val appPrefs = getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        appPrefs.edit().clear().apply()
+        appPrefs.edit().remove("otra_clave_si_es_necesario").apply()
     }
     // Verifica si el dispositivo tiene conexión a Internet activa, ya sea por WiFi o datos móviles.
     private fun isInternetAvailable(context: Context): Boolean {
